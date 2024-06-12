@@ -52,21 +52,21 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Group::class, 'group_users');
     }
-    public static function getConversationsForSidebar(User $exceptUser)
+    public static function getUsersExceptUser(User $user)
     {
-        $userId = $exceptUser->id;
+        $userId = $user->id;
         $query = User::select(['users.*', 'messages.message as last_message','messages.created_at
         as last_message date'])
         ->where('users.id', '!=', $userId)
-        ->when(!$exceptUser->is_admin, function ($query) {
+        ->when(!$user->is_admin, function ($query) {
             $query->whereNull('users.blocked_at');
         })
         ->leftJoin('conversations', function($join) use ($userId) {
             $join->on('conversations.user_id1', '=', 'users.id')
                 ->where('conversations.user_id2', '=', $userId)
-                ->orWhere(function ($query) use ($userId) {
+                ->orWhere(function ($query) use ($userId){
                     $query->on('conversations.user_id2', '=', 'users.id')
-                          ->where('conversations.user_id1', '=', Auth::id());
+                          ->where('conversations.user_id1', '=', $userId);
                 });
         })
         ->leftJoin('messages', 'messages.id','=', 'conversations.last_message_id')
@@ -77,4 +77,20 @@ class User extends Authenticatable
         //dd($query->toSql());
         return $query->get();
     } 
+
+    public function toConversationArray()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'is_group'=>false,
+            'is_user' =>true,
+            'is_admin' => (bool)$this->is_admin,
+            'created-at'=>$this->created_at,
+            'updated_at'=>$this->updated_at,
+            'blocked_at'=>$this->blocked_at,
+            'last_message'=>$this->last_message,
+            'last_message_date'=>$this->last_message_date,
+        ];
+    }
 }       
