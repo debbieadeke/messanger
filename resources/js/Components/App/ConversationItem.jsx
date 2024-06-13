@@ -10,7 +10,7 @@ const ConversationItem = ({
 }) => {
     const page = usePage();
     const currentUser = page.props.auth.user;
-    let classes = "bordder-transparent";
+    let classes = "border-transparent";
     if(selectedConversation) {
         if(
             !selectedConversation.is_group &&
@@ -54,9 +54,8 @@ const ConversationItem = ({
                     :"")
             }
             >
-                <div className="flex gap-1 justify-between items-center">
-                    <h3 className="text-sm font-bold overflow-hidden text-nowrap
-                    text-ellipsis">
+                <div className="flex items-center justify-between gap-1">
+                    <h3 className="overflow-hidden text-sm font-bold text-nowrap text-ellipsis">
                         {conversation.name}
                         </h3>
                         {conversation.last_message_date && (
@@ -65,9 +64,9 @@ const ConversationItem = ({
                             </span>
                         )}
                         </div>
-                        {conversation.last_message_date && (
-                            <p className="text-xs text-nowrap overflow-hidden text-ellipsis">
-                                {conversation.last_message_date}
+                        {conversation.last_message && (
+                            <p className="overflow-hidden text-xs text-nowrap text-ellipsis">
+                                {conversation.last_message}
                             </p>
                         )}
             </div>

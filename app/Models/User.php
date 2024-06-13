@@ -56,7 +56,7 @@ class User extends Authenticatable
     {
         $userId = $user->id;
         $query = User::select(['users.*', 'messages.message as last_message','messages.created_at
-        as last_message date'])
+        as last_message_date'])
         ->where('users.id', '!=', $userId)
         ->when(!$user->is_admin, function ($query) {
             $query->whereNull('users.blocked_at');
