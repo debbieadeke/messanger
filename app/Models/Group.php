@@ -54,8 +54,8 @@ class Group extends Model
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'is_group'=>false,
-            'is_user' =>true,
+            'is_group'=>true,
+            'is_user' =>false,
             'owner_id'=>$this->owner_id,
             'users'=>$this->users,
             'user_ids'=>$this->users->pluck('id'),
@@ -64,6 +64,13 @@ class Group extends Model
             'last_message'=>$this->last_message,
             'last_message_date'=>$this->last_message_date,
         ];
+    }
+    public static function updateroupWithMessage($groupId, $message)
+    {
+        return self::updateOrCreate(
+            ['id' => $groupId],
+            ['last_message_id' => $message->id]
+        );
     }
 }
 
