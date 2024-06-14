@@ -14,7 +14,8 @@ function Home({ selectedConversation = null, messages = null }) {
   useEffect(() => {
     setTimeout(() => {
       if (messagesCtrRef.current) {
-        messagesCtrRef.current.scrollTop = messagesCtrRef.current.scrollHeight;
+        messagesCtrRef.current.scrollTop = 
+        messagesCtrRef.current.scrollHeight;
       }
     }, 10);
   }, [selectedConversation]);
@@ -27,7 +28,7 @@ function Home({ selectedConversation = null, messages = null }) {
     <>
       {!messages && (
         <div className="flex flex-col items-center justify-center h-full gap-8 text-center opacity-35">
-          <div className="text-2xl md:text-4xl p-16 text-slate-200">
+          <div className="p-16 text-2xl md:text-4xl text-slate-200">
             Please select conversation to see messages
           </div>
           <ChatBubbleLeftRightIcon className="inline-block w-32 h-32" />

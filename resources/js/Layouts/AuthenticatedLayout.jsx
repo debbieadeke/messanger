@@ -8,11 +8,67 @@ import { Link, usePage } from '@inertiajs/react';
 export default function Authenticated({ header, children }) {
     const page=usePage();
     const user = page.props.auth.user;
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const conversations = page.props.conversations;
+    const [showingNavigationDropdown, setShowingNavigationDropdown] 
+    = useState(false);
+
+    useEffect(() => {
+        conversations.forEach ((conversation)=> {
+            let channel = `message.group.${conversation.id}`;
+            if(conversation.is_user) {
+                channel = `message.user.${[
+                    parseInt(user.id),
+                    parseInt(conversation.id),
+                ]
+                .sort((a, b)=> a-b)
+                .join("-")}`;
+            }
+            
+            Echo.private(channel)
+            .error((error) => {
+                console.log(error);
+            })
+            .listen("SocketMessage", (e) => {
+                console.log("SocketMessage",e);
+                const message = e.message;
+
+                // emit ("message.created", message);
+                if(message.sender_id === user.id){
+                    return;
+                }
+                // emit("newMessageNotification", {
+                //     user:message.sender,
+                //     group_id: message.group_id,
+                //     message:
+                //     message.message||
+                //     `Shared ${
+                //         message.attachments.length === 1
+                //         ? "an attachment"
+                //         :message.attachments.length +
+                //         " attachments"
+                //     }`
+                // });
+            });
+        });
+        return () => {
+            conversations.forEach ((conversation)=> {
+                let channel = `message.group.${conversation.id}`;
+                if(conversation.is_user) {
+                    channel = `message.user.${[
+                        parseInt(user.id),
+                        parseInt(conversation.id),
+                    ]
+                    .sort((a, b)=> a-b)
+                    .join("-")}`;
+                }
+                Echo.leave(channel);
+            });
+        }
+    },[conversations]);
   
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col h-screen">
+        <div className="flex flex-col h-screen min-h-screen bg-gray-100 dark:bg-gray-900">
             <nav className="bg-white border-b border-gray-100 dark:bg-gray-800 dark:border-gray-700">
                 <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
