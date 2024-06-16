@@ -63,7 +63,8 @@ function Home({ selectedConversation = null, messages = null }) {
       )}
       {messages && (
         <>
-          <ConversationHeader selectedConversation={selectedConversation} />
+          <ConversationHeader selectedConversation={selectedConversation}
+          />>
           <div
             ref={messagesCtrRef}
             className="flex-1 p-5 overflow-y-auto"
