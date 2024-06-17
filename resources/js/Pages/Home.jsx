@@ -5,13 +5,16 @@ import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/solid";
 import ConversationHeader from "@/Components/App/ConversationHeader";
 import MessageItem from "@/Components/App/MessageItem";
 import MessageInput from "@/Components/App/MessageInput";
-import { useEventBus } from "@/EventBus";
+// import { useEventBus } from "@/EventBus";
+import { useEventBus } from '../EventBus.jsx';
+// import { useEventBus } from './resources/js/EventBus.jsx'
 
 function Home({ selectedConversation = null, messages = null }) {
   // console.log("messages", messages);
   const [localMessages, setLocalMessages] = useState([]);
   const messagesCtrRef = useRef(null);
   const { on } = useEventBus();
+
   const messageCreated = (message) => {
     if(
       selectedConversation && 
@@ -63,8 +66,7 @@ function Home({ selectedConversation = null, messages = null }) {
       )}
       {messages && (
         <>
-          <ConversationHeader selectedConversation={selectedConversation}
-          />>
+          <ConversationHeader selectedConversation={selectedConversation} />
           <div
             ref={messagesCtrRef}
             className="flex-1 p-5 overflow-y-auto"

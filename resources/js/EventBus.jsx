@@ -1,9 +1,11 @@
-import React from "react";
+import React, { createContext, useContext, useState } from 'react';
 
-export const EventBus = React.createContext();
+// Create the context
+export const EventBus = createContext();
 
-export const EventBusProvider = ({ children}) => {
-    const [events, setEvents] = React.useState({});
+// Create the provider component
+export const EventBusProvider = ({ children }) => {
+    const [events, setEvents] = useState({});
 
     const emit = (name, data) => {
         if (events[name]) {
@@ -14,7 +16,7 @@ export const EventBusProvider = ({ children}) => {
     };
 
     const on = (name, cb) => {
-        if(!events[name]) {
+        if (!events[name]) {
             events[name] = [];
         }
 
@@ -25,13 +27,14 @@ export const EventBusProvider = ({ children}) => {
         };
     };
 
-    return(
-        <EventBusProvider value={{ emit,on }}>
+    return (
+        <EventBus.Provider value={{ emit, on }}>
             {children}
-        </EventBusProvider>
+        </EventBus.Provider>
     );
 };
 
+// Custom hook to use the EventBus context
 export const useEventBus = () => {
-    return React.useContext(EventBusContext);
+    return useContext(EventBus);
 };
