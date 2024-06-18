@@ -14,6 +14,9 @@ const MessageInput = ({ conversation = null }) => {
     const [messageSending, setMessageSending] = useState(false);
 
     const onSendClick = () => {
+        if(messageSending){
+            return;
+        }
         if (newMessage.trim() === "") {
             setInputErrorMessage("Please provide a message or upload attachments.");
             setTimeout(()=> {
@@ -74,10 +77,9 @@ const MessageInput = ({ conversation = null }) => {
                     onChange={(ev) => setNewMessage(ev.target.value)}
                     />
                     <button onClick={onSendClick} 
+                    disabled={messageSending}
                     className="btn btn-info rounded-1-none">
-                        {messageSending && (
-                            <span className="loading loading-spinner loading-xs"></span>
-                        )}
+                       
                         <PaperAirplaneIcon className="w-6"/>
                         <span className="hidden sm:inline">Send</span>
                     </button>

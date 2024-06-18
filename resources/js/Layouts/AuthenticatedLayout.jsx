@@ -7,67 +7,63 @@ import { Link, usePage } from '@inertiajs/react';
 import { useEventBus } from '@/EventBus';
 
 export default function Authenticated({ header, children }) {
-    const page=usePage();
+    const page = usePage();
     const user = page.props.auth.user;
     const conversations = page.props.conversations;
-    const [showingNavigationDropdown, setShowingNavigationDropdown] 
-    = useState(false);
-    const {emit} = useEventBus();
+    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const { emit } = useEventBus();
 
     useEffect(() => {
-        conversations.forEach ((conversation)=> {
+        conversations.forEach((conversation) => {
             let channel = `message.group.${conversation.id}`;
-            if(conversation.is_user) {
+            if (conversation.is_user) {
                 channel = `message.user.${[
                     parseInt(user.id),
                     parseInt(conversation.id),
                 ]
-                .sort((a, b)=> a-b)
+                .sort((a, b) => a - b)
                 .join("-")}`;
             }
-            
-            Echo.private(channel)
-            .error((error) => {
-                console.log(error);
-            })
-            .listen("SocketMessage", (e) => {
-                console.log("SocketMessage",e);
-                const message = e.message;
 
-                emit ("message.created", message);
-                if(message.sender_id === user.id){
-                    return;
-                }
-                emit("newMessageNotification", {
-                    user:message.sender,
-                    group_id: message.group_id,
-                    message:
-                    message.message||
-                    `Shared ${
-                        message.attachments.length === 1
-                        ? "an attachment"
-                        :message.attachments.length +
-                        " attachments"
-                    }`
+            Echo.private(channel)
+                .error((error) => {
+                    console.log(error);
+                })
+                .listen("SocketMessage", (e) => {
+                    console.log("SocketMessage", e);
+                    const message = e.message;
+
+                    emit("message.created", message);
+                    if (message.sender_id === user.id) {
+                        return;
+                    }
+                    emit("newMessageNotification", {
+                        user: message.sender,
+                        group_id: message.group_id,
+                        message: message.message ||
+                            `Shared ${
+                                message.attachments.length === 1
+                                    ? "an attachment"
+                                    : message.attachments.length + " attachments"
+                            }`,
+                    });
                 });
-            });
         });
         return () => {
-            conversations.forEach ((conversation)=> {
+            conversations.forEach((conversation) => {
                 let channel = `message.group.${conversation.id}`;
-                if(conversation.is_user) {
+                if (conversation.is_user) {
                     channel = `message.user.${[
                         parseInt(user.id),
                         parseInt(conversation.id),
                     ]
-                    .sort((a, b)=> a-b)
+                    .sort((a, b) => a - b)
                     .join("-")}`;
                 }
                 Echo.leave(channel);
             });
-        }
-    },[conversations]);
-  
+        };
+    }, [conversations]);
 
     return (
         <div className="flex flex-col h-screen min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -98,7 +94,6 @@ export default function Authenticated({ header, children }) {
                                                 className="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
                                             >
                                                 {user.name}
-
                                                 <svg
                                                     className="ms-2 -me-0.5 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"

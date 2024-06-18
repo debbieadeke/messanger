@@ -11,7 +11,7 @@ class Conversation extends Model
     protected $fillable = [
         'user_id1',
         'user_id2',
-        'last_mesage_id',
+        'last_message_id',
     ];
 
     public function lastMessage()

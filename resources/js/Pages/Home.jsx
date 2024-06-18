@@ -20,30 +20,31 @@ function Home({ selectedConversation = null, messages = null }) {
     if (
       selectedConversation &&
       selectedConversation.is_group &&
-      selectedConversation.id === message.group_id
+      selectedConversation.id == message.group_id
     ) {
       setLocalMessages((prevMessages) => [...prevMessages, message]);
     }
     if (
       selectedConversation &&
       selectedConversation.is_user &&
-      (selectedConversation.id === message.sender_id ||
-        selectedConversation.id === message.receiver_id)
+      (selectedConversation.id == message.sender_id ||
+        selectedConversation.id == message.receiver_id)
     ) {
+      console.log("Message", message);
       setLocalMessages((prevMessages) => [...prevMessages, message]);
     }
   };
 
   const loadMoreMessages = useCallback(() => {
-    if(noMoreMessages) {
+    if (noMoreMessages) {
       return;
-      }
-    
+    }
+
     const firstMessage = localMessages[0];
     axios
-      .get(route("message.loadOlder",firstMessage.id))
+      .get(route("message.loadOlder", firstMessage.id))
       .then(({ data }) => {
-        if (data.data.length ===0){
+        if (data.data.length === 0) {
           setNoMoreMessages(true);
           return;
         }
@@ -58,7 +59,6 @@ function Home({ selectedConversation = null, messages = null }) {
           return [...data.data.reverse(), ...prevMessages];
         });
       })
-  
   }, [localMessages, noMoreMessages]);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ function Home({ selectedConversation = null, messages = null }) {
   }, [messages]);
 
   useEffect(() => {
-    if(messagesCtrRef.current && scrollFromBottom !==null){
+    if (messagesCtrRef.current && scrollFromBottom !== null) {
       messagesCtrRef.current.scrollTop = 
       messagesCtrRef.current.scrollHeight -
       messagesCtrRef.current.offsetHeight -
@@ -95,21 +95,21 @@ function Home({ selectedConversation = null, messages = null }) {
     const observer = new IntersectionObserver(
       (entries) => 
         entries.forEach(
-          (entry)=> entry.isIntersecting && loadMoreMessages()
+          (entry) => entry.isIntersecting && loadMoreMessages()
         ),
         {
-          rootMargin:"0px 0px 250px 0px",
+          rootMargin: "0px 0px 250px 0px",
         }
       );
     if (loadMoreIntersect.current) {
-      setTimeout(()=>{
+      setTimeout(() => {
         observer.observe(loadMoreIntersect.current);
-      },100);
-      }
-      return ()=> {
-        observer.disconnect();
-      };
-  },[localMessages]);
+      }, 100);
+    }
+    return () => {
+      observer.disconnect();
+    };
+  }, [localMessages]);
 
   return (
     <>
@@ -138,8 +138,8 @@ function Home({ selectedConversation = null, messages = null }) {
             {localMessages.length > 0 && (
               <div className="flex flex-col flex-1">
                 <div ref={loadMoreIntersect}></div>
-                {localMessages.map((message) => (
-                  <MessageItem key={message.id} message={message} />
+                {localMessages.map((message, index) => (
+                  <MessageItem key={`${message.id}-${index}`} message={message} />
                 ))}
               </div>
             )}
