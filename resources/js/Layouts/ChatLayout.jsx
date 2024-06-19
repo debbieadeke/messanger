@@ -28,30 +28,27 @@ const ChatLayout = ({ children }) => {
   };
 
   const messageCreated = (message) => {
+    
     setLocalConversations((oldUsers) => {
       return oldUsers.map((u) => {
         if (
           message.receiver_id &&
           !u.is_group &&
-          (u.id === message.sender_id || u.id === message.receiver_id)
+          (u.id == message.sender_id || u.id == message.receiver_id)
         ) {
-          return {
-            ...u,
-            last_message: message.message,
-            last_message_date: message.created_at,
-          };
+          u.last_message = message.message;
+          u.last_message_date = message.created_at;
+          return u;
         }
         if (
           message.group_id &&
           u.is_group &&
-          u.id === message.group_id
+          u.id == message.group_id
         ) {
-          return {
-            ...u,
-            last_message: message.message,
-            last_message_date: message.created_at,
+          u.last_message = message.message;
+          u.last_message_date = message.created_at;
+          return u;
           };
-        }
         return u;
       });
     });

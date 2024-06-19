@@ -59,13 +59,15 @@ class Group extends Model
             'owner_id'=>$this->owner_id,
             'users'=>$this->users,
             'user_ids'=>$this->users->pluck('id'),
-            'created-at'=>$this->created_at,
+            'created_at'=>$this->created_at,
             'updated_at'=>$this->updated_at,
             'last_message'=>$this->last_message,
-            'last_message_date'=>$this->last_message_date,
+            'last_message_date'=>$this->last_message_date ? ($this->last_message_date. ' UTC') : null,
+           // 'last_message_date'=>$this->last_message_date,
+            // ? ($this->last_message_date. 'UTC') :null,
         ];
     }
-    public static function updateroupWithMessage($groupId, $message)
+    public static function updateGroupWithMessage($groupId, $message)
     {
         return self::updateOrCreate(
             ['id' => $groupId],
