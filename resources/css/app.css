@@ -5,6 +5,12 @@
 #app{
     height: 100vh;
 }
+.EmojiPickerReact.epr-dark-theme{
+    background-color: theme('colors.gray.800');
+}
+.EmojiPickerReact.epr-dark-theme .epr-emoji-category-label{
+    background-color: theme('colors.gray.900');
+}
 .conversation-item .avatar.online::before,
 .conversation-item .avatar.offline::before{
     width: 8px;

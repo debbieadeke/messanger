@@ -14,6 +14,8 @@ function Home({ selectedConversation = null, messages = null }) {
   const [scrollFromBottom, setScrollFromBottom] = useState(0);
   const loadMoreIntersect = useRef(null);
   const messagesCtrRef = useRef(null);
+  const [showAttachmentPreview, setShowAttachmentPreview] = useState(false);
+  const [previewAttachent, setPreviewAttachment] = useState({});
   const { on } = useEventBus();
 
   const messageCreated = (message) => {
@@ -51,24 +53,30 @@ function Home({ selectedConversation = null, messages = null }) {
         const scrollHeight = messagesCtrRef.current.scrollHeight;
         const scrollTop = messagesCtrRef.current.scrollTop;
         const clientHeight = messagesCtrRef.current.clientHeight;
-        const tmpScrollFromBottom = 
-        scrollHeight - scrollTop - clientHeight;
+        const tmpScrollFromBottom = scrollHeight - scrollTop - clientHeight;
         console.log("tmpScrollFromBottom", tmpScrollFromBottom);
         setScrollFromBottom(scrollHeight - scrollTop - clientHeight);
         setLocalMessages((prevMessages) => {
           return [...data.data.reverse(), ...prevMessages];
         });
-      })
+      });
   }, [localMessages, noMoreMessages]);
+
+  const onAttachmentClick = (attachments, ind) => {
+    setPreviewAttachment({
+      attachments,
+      ind,
+    });
+    setShowAttachmentPreview(true);
+  };
 
   useEffect(() => {
     setTimeout(() => {
       if (messagesCtrRef.current) {
-        messagesCtrRef.current.scrollTop =
-         messagesCtrRef.current.scrollHeight;
+        messagesCtrRef.current.scrollTop = messagesCtrRef.current.scrollHeight;
       }
     }, 10);
-    
+
     const offCreated = on('message.created', messageCreated);
     setScrollFromBottom(0);
     setNoMoreMessages(false);
@@ -85,9 +93,9 @@ function Home({ selectedConversation = null, messages = null }) {
   useEffect(() => {
     if (messagesCtrRef.current && scrollFromBottom !== null) {
       messagesCtrRef.current.scrollTop = 
-      messagesCtrRef.current.scrollHeight -
-      messagesCtrRef.current.offsetHeight -
-       scrollFromBottom;
+        messagesCtrRef.current.scrollHeight -
+        messagesCtrRef.current.offsetHeight -
+        scrollFromBottom;
     }
     if (noMoreMessages) {
       return;
@@ -97,10 +105,10 @@ function Home({ selectedConversation = null, messages = null }) {
         entries.forEach(
           (entry) => entry.isIntersecting && loadMoreMessages()
         ),
-        {
-          rootMargin: "0px 0px 250px 0px",
-        }
-      );
+      {
+        rootMargin: "0px 0px 250px 0px",
+      }
+    );
     if (loadMoreIntersect.current) {
       setTimeout(() => {
         observer.observe(loadMoreIntersect.current);
@@ -127,7 +135,7 @@ function Home({ selectedConversation = null, messages = null }) {
           <div
             ref={messagesCtrRef}
             className="flex-1 p-5 overflow-y-auto"
-            style={{ maxHeight: 'calc(98vh - 200px)' }} // Adjust this based on your layout
+            style={{ maxHeight: 'calc(97vh - 200px)' }} // Adjust this based on your layout
           >
             {/* Messages */}
             {localMessages.length === 0 && (
@@ -146,6 +154,15 @@ function Home({ selectedConversation = null, messages = null }) {
           </div>
           <MessageInput conversation={selectedConversation}/>
         </>
+      )}
+
+      {previewAttachent.attachments && (
+        <AttachmentPreviewModal
+        attachments={previewAttachent.attachments}
+        index={previewAttachent.ind}
+        show={showAttachmentPreview}
+        onClose={() => setShowAttachmentPreview(false)}
+        />
       )}
     </>
   );
