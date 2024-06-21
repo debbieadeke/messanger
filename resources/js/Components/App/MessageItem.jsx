@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import React from "react";
 import { usePage } from "@inertiajs/react";
 import { formatMessageDateLong } from "@helpers";
+import MessageAttachments from "./MessageAttachments"
 
 const MessageItem = ({ message, attachmentClick }) => {
   const currentUser = usePage().props.auth.user;

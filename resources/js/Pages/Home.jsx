@@ -7,6 +7,7 @@ import MessageItem from "@/Components/App/MessageItem";
 import MessageInput from "@/Components/App/MessageInput";
 import { useEventBus } from '../EventBus.jsx';
 import axios from "axios";
+import AttachmentPreviewModal from "@/Components/App/AttachmentPreviewModal.jsx";
 
 function Home({ selectedConversation = null, messages = null }) {
   const [localMessages, setLocalMessages] = useState([]); 
@@ -135,7 +136,7 @@ function Home({ selectedConversation = null, messages = null }) {
           <div
             ref={messagesCtrRef}
             className="flex-1 p-5 overflow-y-auto"
-            style={{ maxHeight: 'calc(97vh - 200px)' }} // Adjust this based on your layout
+            style={{ maxHeight: 'calc(100vh - 200px)' }} // Adjust this based on your layout
           >
             {/* Messages */}
             {localMessages.length === 0 && (
@@ -147,7 +148,11 @@ function Home({ selectedConversation = null, messages = null }) {
               <div className="flex flex-col flex-1">
                 <div ref={loadMoreIntersect}></div>
                 {localMessages.map((message, index) => (
-                  <MessageItem key={`${message.id}-${index}`} message={message} />
+                  <MessageItem
+                   key={message.id} 
+                   message={message} 
+                  attachmentClick={onAttachmentClick}
+                   />
                 ))}
               </div>
             )}

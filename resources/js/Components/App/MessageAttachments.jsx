@@ -9,16 +9,16 @@ const MessageAttachments = ({ attachments, attachmentClick }) => {
     return (
         <>
             {attachments.length > 0 && (
-                <div className="flex justify-end gap-1 mt-2-wrap">
+                <div className="flex justify-end gap-1 flex-wrap mt-2">
                     {attachments.map((attachment, ind) => (
                         <div
                             onClick={(ev) => attachmentClick(attachments, ind)}
                             key={attachment.id}
                             className={`group flex flex-col items-center justify-center text-gray-500
                             relative cursor-pointer ` +
-                                isAudio(attachment) 
+                                (isAudio(attachment) 
                                 ? "w-84" 
-                                : "w-32 aspect-square bg-blue-100"
+                                : "w-32 aspect-square bg-blue-100")
                             }
                         >
                             {!isAudio(attachment) && (
@@ -28,7 +28,6 @@ const MessageAttachments = ({ attachments, attachmentClick }) => {
                                 className="absolute right-0 z-20 flex items-center justify-center w-8 h-8 text-gray-100 transition-all bg-gray-700 rounded opacity-100 group-hover:opacity-100 top-cursor-pointer hover:bg-gray-800"
                                 >
                                     <ArrowDownTrayIcon className="w-4 h-4"/>
-                                    
                                 </a>
                             )} 
                             {isImage(attachment)&& (
@@ -63,7 +62,9 @@ const MessageAttachments = ({ attachments, attachmentClick }) => {
                 className="flex flex-col justify-center items-center">
                     <PaperClipIcon className="w-10 h-10 mb-3"/>
 
-                    <small>{attachment.name}</small>
+                    <small className="text-center">
+                        {attachment.name}
+                        </small>
                 </a>
                     )}
                 </div>
