@@ -26,7 +26,7 @@ const CustomAudioPlayer = ({file, showVolume = true}) => {
         setVolume(volume);      
     };
     
-    const handleTimeUpdate = () => {
+    const handleTimeUpdate = (e) => {
         const audio = audioRef.current;
         setDuration(audio.duration);
         setCurrentTime(e.target.currentTime);
