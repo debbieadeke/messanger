@@ -12,11 +12,12 @@ class MessageObserver
     public function deleting (Message $message)
     {
         $message->attachments->each(function ($attachment){
-            $dir = dirname($attachment->path);
-            Storage::disk('public')->deleteDirectory($dir);
+            
+        //     $dir = dirname($attachment->path);
+        //     Storage::disk('public')->deleteDirectory($dir);
 
-        });
-        $message->attachments()->delete();
+        // });
+        // $message->attachments()->delete();
 
         if($message->group_id) {
             $group = Group::where('last_message_id',$message->id)->first();
