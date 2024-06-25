@@ -54,7 +54,7 @@ const ChatLayout = ({ children }) => {
     });
   };
   const messageDeleted = ({ prevMessage}) => {
-    
+    debugger;
     if(!prevMessage) {
       return;
     }

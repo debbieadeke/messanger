@@ -45,7 +45,7 @@ function Home({ selectedConversation = null, messages = null }) {
       selectedConversation.id == message.group_id
     ) {
       setLocalMessages((prevMessages) => {
-        return prevMessages.filter((m) => m.id != message.id);
+        return prevMessages.filter((m) => m.id !== message.id);
       });
     }
     if (
@@ -56,7 +56,7 @@ function Home({ selectedConversation = null, messages = null }) {
     ) {
       console.log("Message", message);
       setLocalMessages((prevMessages) => {
-        return prevMessages.filter((m) => m.id != message.id);
+        return prevMessages.filter((m) => m.id !== message.id);
       });
     }
   }

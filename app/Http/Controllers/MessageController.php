@@ -136,7 +136,7 @@ class MessageController extends Controller
             $group = Group::find($group->id);
             $lastMessage = $group->lastMessage;
         } else if ($conversation){
-            $group = Conversation::find($conversation->id);
+            $conversation = Conversation::find($conversation->id);
             $lastMessage = $conversation->lastMessage;
 
         }
