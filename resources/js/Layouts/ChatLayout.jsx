@@ -4,6 +4,7 @@ import { useEventBus } from "@/EventBus";
 import { PencilIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import { usePage } from "@inertiajs/react";
 import { useState, useEffect } from "react";
+import GroupModal from "../Components/App/GroupModal";
 
 const ChatLayout = ({ children }) => {
   const page = usePage();
@@ -12,6 +13,7 @@ const ChatLayout = ({ children }) => {
   const [localConversations, setLocalConversations] = useState([]);
   const [sortedConversations, setSortedConversations] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState({});
+  const [showGroupModal, setShowGroupModal] = useState(false);
   const {on} = useEventBus();
 
   const isUserOnline = (userId) => onlineUsers[userId];
@@ -132,6 +134,7 @@ const ChatLayout = ({ children }) => {
   }, []);
 
   return (
+    <>
     <div className="flex flex-1 w-full overflow-hidden">
       <div 
         className={`transition-all w-full sm:w-[220px] md:w-[300px] bg-slate-800 
@@ -140,7 +143,10 @@ const ChatLayout = ({ children }) => {
         <div className="flex items-center justify-between px-3 py-2 text-xl font-medium text-gray-200">
           My Conversations
           <div className="tooltipntoltip-left" data-tip="Create New Group">
-            <button className="text-gray-400 hover:text-gray-200">
+
+            <button onClick={(ev)=> setShowGroupModal(true)}
+             className="text-gray-400 hover:text-gray-200">
+              
               <PencilSquareIcon className="inline-block w-4 h-4 ml-2"/>
             </button>
           </div>
@@ -168,6 +174,10 @@ const ChatLayout = ({ children }) => {
         {children}
       </div>
     </div>
+    <GroupModal 
+    show={showGroupModal} 
+    onClose={()=>setShowGroupModal(false)}/>
+    </>
   );
 };
 

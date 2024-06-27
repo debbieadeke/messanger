@@ -1,9 +1,12 @@
 
 import { Link, usePage } from "@inertiajs/react";
-import { ArrowLeftIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
+import { ArrowLeftIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import UserAvatar from "./UserAvatar";
 import GroupAvatar from "./GroupAvatar";
+import GroupDescriptionPopover from "./GroupDescriptionPopover";
+import GroupUsersPopover from "./GroupUsersPopover";
 const ConversationHeader = ({selectedConversation}) => {
+    const authUser = usePage().props.auth.user;
 
     const onDeleteGroup = ()=> {
         if(!window.confirm("Are you sure you want to delete this group")) {
