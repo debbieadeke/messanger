@@ -53,7 +53,7 @@ export default function UserPicker({ value, options ,onSelect}) {
                  afterLeave={()=> setQuery("")}
                  >
                     <Combobox.Options className="absolute mt-1 max-h-60 w-fukk overflow-auto rounded-md bg-gray-900
-                    py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:txt-sm">
+                    py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:txt-sm w-[607px]">
                         {filteredPeople.length === 0 && query !== "" ? (
                             <div className="relative cursor-default select-none px-4 py-2 text-gray-700">
                                 Nothing found.

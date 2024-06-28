@@ -49,11 +49,12 @@ export default function GroupModal({show = false, onClose = () => {}}){
      };
      useEffect(() => {
         return on ("GroupModal.show", (group) => {
+            debugger;
             setData({
                 name: group.name,
                 description: group.description,
                 user_ids: group.users
-                .filter((u) => group.owner-id !== u.id)
+                .filter((u) => group.owner_id !== u.id)
                 .map((u) => u.id),
             });
             setGroup(group);
