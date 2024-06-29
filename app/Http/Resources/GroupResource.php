@@ -14,6 +14,13 @@ class GroupResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return[
+
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'owner' => new UserResource($this->owner), 
+            'users' => UserResource::collection($this->users),
+        ];
     }
 }
