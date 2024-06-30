@@ -50,6 +50,17 @@ export default function Authenticated({ header, children }) {
                             }`,
                     });
                 });
+
+                if(conversation.is_group) {
+                    Echo.private(`group.deleted.${conversation.id}`)
+                    .listen("GroupDeleted", (e) => {
+                        console.log("GroupDeleted",e);
+                        debbuger;
+                        emit("group.deleted",{id: e.id, name: e.name});
+                }).catch ((e)=> {
+                    console.error(e);
+                });
+            }
         });
         return () => {
             conversations.forEach((conversation) => {
