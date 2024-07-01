@@ -43,7 +43,6 @@ class DeleteGroupJob implements ShouldQueue
         //Delete the group
         $this->group->delete();  
 
-        dd('Group deletd', $this->group);
 
 
         GroupDeleted::dispatch($id, $name);

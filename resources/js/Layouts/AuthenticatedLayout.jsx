@@ -55,9 +55,9 @@ export default function Authenticated({ header, children }) {
                     Echo.private(`group.deleted.${conversation.id}`)
                     .listen("GroupDeleted", (e) => {
                         console.log("GroupDeleted",e);
-                        debbuger;
                         emit("group.deleted",{id: e.id, name: e.name});
-                }).catch ((e)=> {
+                })
+                .error ((e)=> {
                     console.error(e);
                 });
             }
@@ -74,6 +74,9 @@ export default function Authenticated({ header, children }) {
                     .join("-")}`;
                 }
                 Echo.leave(channel);
+                if(conversation.is_group) {
+                    Echo.leave(`group.deleted.${conversation.id}`);
+                }
             });
         };
     }, [conversations]);

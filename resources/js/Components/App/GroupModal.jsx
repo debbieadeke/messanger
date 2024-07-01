@@ -49,7 +49,6 @@ export default function GroupModal({show = false, onClose = () => {}}){
      };
      useEffect(() => {
         return on ("GroupModal.show", (group) => {
-            debugger;
             setData({
                 name: group.name,
                 description: group.description,
