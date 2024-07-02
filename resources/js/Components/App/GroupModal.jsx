@@ -34,7 +34,7 @@ export default function GroupModal({show = false, onClose = () => {}}){
             });
             return;
         }
-        post(route('groups.store'), {
+        post(route('group.store'), {
             
             onSuccess: ()=> {
                 closeModal();
