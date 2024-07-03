@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 
-Route::middleware(['auth','verified'])->group(function(){
+Route::middleware(['auth','verified', 'active'])->group(function(){
     Route::get('/', [HomeController::class,'home'])->name('dashboard');
 
     Route::get('user/{user}', [MessageController::class, 'byUser'])->name('chat.user');
-    Route::get('group/{group}', [MessageController::class, 'bygroup'])->name('chat.group');
+    Route::get('group/{group}', [MessageController::class, 'byGroup'])->name('chat.group');
 
     Route::post('/message', [MessageController::class, 'store'])->name('message.store');
     Route::delete('/message/{message}', [MessageController::class, 'destroy'])->name('message.destroy');
