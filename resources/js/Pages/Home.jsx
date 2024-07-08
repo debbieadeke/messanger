@@ -162,7 +162,7 @@ function Home({ selectedConversation = null, messages = null }) {
           <div
             ref={messagesCtrRef}
             className="flex-1 p-5 overflow-y-auto"
-            style={{ maxHeight: 'calc(70vh - 200px)' }} // Adjust this based on your layout
+            style={{ maxHeight: 'calc(100vh - 200px)' }} // Adjust this based on your layout
           >
             {/* Messages */}
             {localMessages.length === 0 && (

@@ -21,8 +21,8 @@ class UserController extends Controller
             'is_admin' => 'boolean',
         ]);
         //Generate and assign a random password
-        // $rawPassword = Str::random(8);
-        $rawPassword = '12345678';
+        $rawPassword = Str::random(8);
+        // $rawPassword = '12345678';
         $data['password'] = bcrypt($rawPassword);
         $dat['email_verified_at'] = now();
 

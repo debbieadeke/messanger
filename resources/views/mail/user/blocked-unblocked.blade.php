@@ -9,6 +9,6 @@
     </x-mail::button>
     @endif
 
-    Thankyou, <br>
+    Thankyou, 
     {{config('app.name')}}
 </x-mail::message>
